@@ -1,0 +1,43 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://Scenes/Stats.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/Hitbox.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Scenes/Hurtbox.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scripts/Enemy.gd" type="Script" id=4]
+
+[sub_resource type="AnimationNodeStateMachine" id=1]
+
+[sub_resource type="AnimationNodeStateMachinePlayback" id=2]
+
+[node name="Enemy" type="KinematicBody2D"]
+script = ExtResource( 4 )
+
+[node name="Stats" parent="." instance=ExtResource( 1 )]
+type = "Enemy"
+health = 10
+maxHealth = 10
+damage = 1.0
+speed = 100.0
+fireRate = 1.0
+maxRange = 100.0
+
+[node name="Sprite" type="Sprite" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+[node name="AnimationTree" type="AnimationTree" parent="."]
+tree_root = SubResource( 1 )
+parameters/playback = SubResource( 2 )
+
+[node name="Hitbox" parent="." instance=ExtResource( 2 )]
+
+[node name="Hurtbox" parent="." instance=ExtResource( 3 )]
+
+[node name="AttackRate" type="Timer" parent="."]
+
+[node name="AttackPosition" type="Position2D" parent="."]
+
+[connection signal="distanciaAlcanzada" from="." to="." method="_on_Enemy_distanciaAlcanzada"]
+[connection signal="timeout" from="AttackRate" to="." method="_on_AttackRate_timeout"]
